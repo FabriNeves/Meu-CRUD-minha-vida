@@ -1,0 +1,30 @@
+{
+  "name": "crud-com-mongodb",
+  "version": "1.0.0",
+  "description": "Este é um projeto que consiste em um CRUD simples, construído com NodeJS e conectado ao banco de dados gratuito MongoDB Atlas. Este projeto faz parte da mentoria CSV23🚀🚀🚀.",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabriNeves/crud-MongoDB-plus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FabriNeves/crud-MongoDB-plus/issues"
+  },
+  "homepage": "https://github.com/FabriNeves/crud-MongoDB-plus#readme"
+}
