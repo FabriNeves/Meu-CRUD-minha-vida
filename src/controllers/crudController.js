@@ -1,5 +1,4 @@
 import Dados from "../models/dados.js";
-
 class CrudController {
     constructor(model) {
       this.model = model;
