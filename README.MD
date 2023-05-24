@@ -1,4 +1,4 @@
-# Meu CRUD minha Vida
+# 🏡 Meu CRUD minha Vida
 Este projeto consiste em um CRUD , que pode servir de base para diversos projetos de Front-end , assim uma pessoa desenvolvedora de Front-end pode ter o gostinho de integrar seu front com um back-end. 
 
 ## 📚 Bibliotecas utilizadas
