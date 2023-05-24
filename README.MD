@@ -1,46 +1,90 @@
-# Projeto CRUD em NodeJS com MongoDB Atlas
-Este é um projeto que consiste em um CRUD simples, construído com NodeJS e conectado ao banco de dados gratuito MongoDB Atlas. Este projeto faz parte da mentoria CSV23🚀🚀🚀.
+# Meu CRUD minha Vida
+Este projeto consiste em um CRUD , que pode servir de base para diversos projetos de Front-end , assim uma pessoa desenvolvedora de Front-end pode ter o gostinho de integrar seu front com um back-end. 
 
 ## 📚 Bibliotecas utilizadas
 - Express 4.17.3
 - Mongoose 6.2.6
-- Nodemon 2.0.15 (Somente para desenvolvimento)
+- Cors
 
 ## 🛠 Como usar
 - Iniciar o Git.
 - Clone este repositório com git clone.
-- Instale as dependências do projeto com npm install.(install express@4.17.3 , install mongoose@6.2.6)
+- Instale as dependências do projeto com npm install.
 - Inicie o projeto com npm start.
 
 ## 🗝 Postman
-- O Postman foi utilizado para testar os verbos HTTP. 
-- Endereço do servidor local é http://localhost:3000/ 
+- Se quiser testar as rotas foi adcionado ao projeto uma Coleção de metodos , este arquivo esta dentro da pasta *PostmanCollection*. 
 
-## ⚠ Arquivos importantes
-- config/mongoConection.js - Contém a configuração da conexão com o MongoDB Atlas.
-- routes/index.js - Contém as rotas da aplicação.
-- app.js - Contém a configuração do Express e a importação das bibliotecas e rotas.
-- controllers\tarefasControllers.js - Define os controles para  Visualizar, Excluir, Inserir, Alterar.
-- models\Tarefas.js - Arquivo aonde é guardado o Schema de cada tarefa. 
+## 📗 MongoDB
 
-## 📗 MongoDB Atlas
-Após criar uma conta no MongoDB é preciso adcionar a String de conexão para o seu código esta String está dentro do arquivo config/mongoConection.js.
-Exemplo : "mongodb+srv://Usuario:*password*@*Cluster*.xgrmd7m.mongodb.net/*Base-de-Dados*".
+Crie um arquivo "*.env*"para armazenar as variaveis de ambiente. 
 
-## 📺 Preview 
+No caso de um servidor local: 
 
-Para visualizar, excluir, inserir, alterar no banco de dados foi utilizado o programa [Postman](https://www.postman.com/).
+```bash
+STRING_CONEXAO_DB = "mongodb://127.0.0.1:27017/Dados"
+```
+Para conectar-se ao MongoDB Atlas a string de conexão deve seguir esse padrão:
 
-- Para vizualizar  utiliza-se verbo GET na rota http://localhost:3000/tarefas , tendo o retorno : 
+```bash
+STRING_CONEXAO_DB = "mongodb+srv://Usuario:*password*@*Cluster*.xgrmd7m.mongodb.net/*Base-de-Dados*"
+```
+ 
+## 🔀 Rotas
 
-![metodo GET](./img/metodoGET.png)
+### GET /dados/listar
 
-- Para excluir utiliza-se o verbo DELETE na rota http://localhost:3000/tarefas + ID , sendo  o ID o objeto que quer se deletar. 
+Descrição: Retorna uma lista de todos os dados cadastrados.
 
-- Para atualizar utiliza-se o verbo PUT na rota http://localhost:3000/tarefas + ID.
+### POST /dados/cadastrar
 
-![metodo PUT](./img/metodoPUT.png)
+Descrição: Cadastra um novo dado.
+Exemplo de JSON para requisição:
 
-- Para excluir utiliza-se o verbo POST na rota http://localhost:3000/tarefas , sendo  o ID o objeto criado automaticamente pelo MongoDB.
+```JSON
+{
+  "campoString": "Exemplo de String",
+  "campoNumber": 123,
+  "campoBoolean": true,
+  "campoDate": "2023-05-22T00:00:00.000Z",
+  "campoArray": [1, 2, 3],
+  "campoObject": { "chave": "valor" }
+}
+```
 
-![metodo POST](./img/metodoPOST.png)
+### PUT /dados/atualizar/:id
+
+Descrição: Atualiza um dado existente pelo ID.
+Exemplo de JSON para requisição:
+
+```JSON 
+{
+  "campoString": "Nova String"
+}
+```
+
+### GET /dados/porID/:id
+
+Descrição: Retorna um dado existente pelo ID.
+
+### DELETE /dados/porID/:id
+
+Descrição: Deleta um dado existente pelo ID.
+
+## Um CRUD para chamar de seu.
+
+O intuito desse projeto é servir de base para teste do Front-end por tanto você pode modelar um dado que deseja armazenar no banco de dados.
+
+- Abra o arquivo *src/models/dadosSchema.js* no seu editor de código.
+- Observe a estrutura do esquema definido no arquivo. Cada campo possui um nome e um tipo associado.
+- Para adicionar um novo campo, você pode seguir o padrão existente e adicionar uma nova propriedade ao objeto do esquema. Por exemplo, se você deseja adicionar um campo de texto chamado campoTexto, você pode adicionar o seguinte código:
+
+```Javascript 
+campoTexto: {
+  type: String,
+  required: [true, "Campo Texto requerido"]
+}
+```
+Certifique-se de fornecer um nome exclusivo para o novo campo e definir o tipo correto (por exemplo, String, Number, Boolean, Date, Array, Object, etc.).
+- Após fazer as alterações desejadas no esquema, salve o arquivo.
+- Agora você pode utilizar o novo campo adicionado para armazenar os dados desejados na coleção "Dados".
