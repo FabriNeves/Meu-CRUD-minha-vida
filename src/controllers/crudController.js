@@ -10,47 +10,52 @@ class CrudController {
       const data = await this.model.find();
       res.status(200).json({ isSuccess: true, message: data });
     } catch (err) {
-      res.status(500).json({ isSuccess: false, message: err });
+      next(err);
+      // res.status(500).json({ isSuccess: false, message: err });
     }
   };
 
-  obterPorId = async (req, res) => {
+  obterPorId = async (req, res, next) => {
     try {
       const id = req.params.id;
-      const data = await this.model.findById(id);
+      const data = await this.model.findById(id)
+        .populate("campo1")
+        .exec();
       if (data !== null) {
         res.status(200).json({ isSuccess: true, message: data });
       } else {
         res.status(404).json({ isSuccess: false, message: "ID não localizada" })
       }
-    } catch (err) {
-      if(err instanceof mongoose.Error.CastError){
-        res.status(400).json({ isSuccess: false, message: "Um ou mais dados fornecidos está incorreto." })
-      }else {
-        res.status(500).json({ isSuccess: false, message: err })
-        
-      }
-      
+    } catch (erro) {
+      next(erro);
     }
   };
 
-  cadastrar = async (req, res) => {
+  cadastrar = async (req, res, next) => {
     try {
       const newData = new this.model(req.body);
       const savedData = await newData.save();
       res.status(201).json({ isSuccess: true, message: savedData.toJSON() });
     } catch (err) {
-      res.status(500).json({ isSuccess: false, message: `${err.message} - Erro ao cadastrar novo item.` });
+      next(err);
+      // res.status(500).json({ isSuccess: false, message: `${err.message} - Erro ao cadastrar novo item.` });
     }
   };
 
-  atualizar = async (req, res) => {
+  atualizar = async (req, res, next) => {
     try {
       const id = req.params.id;
-      await this.model.findByIdAndUpdate(id, { $set: req.body });
-      res.status(200).json({ isSuccess: true, message: "Item atualizado com sucesso." });
+      const existingItem = await this.model.findById(id);
+
+      if (existingItem) {
+        await this.model.findByIdAndUpdate(id, { $set: req.body });
+        res.status(200).json({ isSuccess: true, message: "Item atualizado com sucesso." });
+      } else {
+        res.status(404).json({ isSuccess: false, message: "Item não encontrado." });
+      }
     } catch (err) {
-      res.status(500).json({ isSuccess: false, message: err.message });
+      next(err);
+      // res.status(500).json({ isSuccess: false, message: err.message });
     }
   };
 
@@ -60,7 +65,8 @@ class CrudController {
       await this.model.findByIdAndDelete(id);
       res.status(200).json({ isSuccess: true, message: `Item removido: ${id}` });
     } catch (err) {
-      res.status(500).json({ isSuccess: false, message: err.message });
+      next(err);
+      // res.status(500).json({ isSuccess: false, message: err.message });
     }
   }
 }
