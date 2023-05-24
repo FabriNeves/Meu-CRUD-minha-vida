@@ -1,64 +1,61 @@
 import Dados from "../models/dados.js";
 class CrudController {
-    constructor(model) {
-      this.model = model;
-    }
-  
-    listar = (req, res) => {
-      this.model.find((err, data) => {
-        if (err) {
-          res.status(500).send({ message: err.message });
-        } else {
-          res.status(200).json(data);
-        }
-      });
-    };
-  
-    obterPorId = (req, res) => {
-      const id = req.params.id;
-      this.model.findById(id, (err, data) => {
-        if (err) {
-          res.status(400).send({ message: `${err.message} - Id não localizada.` });
-        } else {
-          res.status(200).send(data);
-        }
-      });
-    };
-  
-    cadastrar = (req, res) => {
-      let newData = new this.model(req.body);
-  
-      newData.save((err) => {
-        if (err) {
-          res.status(500).send({ message: `${err.message} - Erro ao cadastrar novo item.` });
-        } else {
-          res.status(201).send(newData.toJSON());
-        }
-      });
-    };
-  
-    atualizar = (req, res) => {
-      const id = req.params.id;
-      this.model.findByIdAndUpdate(id, { $set: req.body }, (err) => {
-        if (!err) {
-          res.status(200).send({ message: "Item atualizado com sucesso." });
-        } else {
-          res.status(500).send({ message: err.message });
-        }
-      });
-    };
-  
-    excluir = (req, res) => {
-      const id = req.params.id;
-      this.model.findByIdAndDelete(id, (err) => {
-        if (err) {
-          res.status(500).send({ message: err.message });
-        } else {
-          res.status(200).send({ message: `Item removido: ${id}` });
-        }
-      });
-    };
+  constructor(model) {
+    this.model = model;
   }
-  
+
+  listar = async (req, res) => {
+    try {
+      const data = await this.model.find();
+      res.status(200).json({ isSuccess: true, message: data });
+    } catch (err) {
+      res.status(500).json({ isSuccess: false, message: err });
+    }
+  };
+
+  obterPorId = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const data = await this.model.findById(id);
+      if (data !== null) {
+        res.status(200).json({ isSuccess: true, message: data });
+      } else {
+        res.status(404).json({ isSuccess: false, message: "ID não localizada" })
+      }
+    } catch (err) {
+      res.status(500).json({ isSuccess: false, message: err })
+    }
+  };
+
+  cadastrar = async (req, res) => {
+    try {
+      const newData = new this.model(req.body);
+      const savedData = await newData.save();
+      res.status(201).json({ isSuccess: true, message: savedData.toJSON() });
+    } catch (err) {
+      res.status(500).json({ isSuccess: false, message: `${err.message} - Erro ao cadastrar novo item.` });
+    }
+  };
+
+  atualizar = async (req, res) => {
+    try {
+      const id = req.params.id;
+      await this.model.findByIdAndUpdate(id, { $set: req.body });
+      res.status(200).json({ isSuccess: true, message: "Item atualizado com sucesso." });
+    } catch (err) {
+      res.status(500).json({ isSuccess: false, message: err.message });
+    }
+  };
+
+  excluir = async (req, res) => {
+    try {
+      const id = req.params.id;
+      await this.model.findByIdAndDelete(id);
+      res.status(200).json({ isSuccess: true, message: `Item removido: ${id}` });
+    } catch (err) {
+      res.status(500).json({ isSuccess: false, message: err.message });
+    }
+  }
+}
+
 export default CrudController;
-  
