@@ -1,11 +1,28 @@
 import mongoose from "mongoose";
 
 const dadosSchema = new mongoose.Schema({
-  
-  campo1: { type: String, required: true },
-  campo2: { type: Number, required: true },
-  campo3: { type: Boolean, default: false },
-  
+  campoString: {
+    type: String,
+    required: [true, "Campo String requerido"]
+  },
+  campoNumber: {
+    type: Number,
+    required: [true, "Campo Number requerido"]
+  },
+  campoBoolean: {
+    type: Boolean,
+    default: false
+  },
+  campoDate: {
+    type: Date,
+    default: Date.now
+  },
+  campoArray: {
+    type: Array
+  },
+  campoObject: {
+    type: Object
+  }
 });
 
 const Dados = mongoose.model("Dados", dadosSchema);

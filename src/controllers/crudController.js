@@ -5,7 +5,7 @@ class CrudController {
     this.model = model;
   }
 
-  listar = async (req, res) => {
+  listar = async (req, res,next) => {
     try {
       const data = await this.model.find();
       res.status(200).json({ isSuccess: true, message: data });
@@ -59,7 +59,7 @@ class CrudController {
     }
   };
 
-  excluir = async (req, res) => {
+  excluir = async (req, res,next) => {
     try {
       const id = req.params.id;
       await this.model.findByIdAndDelete(id);
