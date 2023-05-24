@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Dados from "../models/dados.js";
 class CrudController {
   constructor(model) {
@@ -23,7 +24,13 @@ class CrudController {
         res.status(404).json({ isSuccess: false, message: "ID não localizada" })
       }
     } catch (err) {
-      res.status(500).json({ isSuccess: false, message: err })
+      if(err instanceof mongoose.Error.CastError){
+        res.status(400).json({ isSuccess: false, message: "Um ou mais dados fornecidos está incorreto." })
+      }else {
+        res.status(500).json({ isSuccess: false, message: err })
+        
+      }
+      
     }
   };
 
